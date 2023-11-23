@@ -4,7 +4,7 @@ const dynamoDb  = new AWS.DynamoDB.DocumentClient();
 exports.handler = async (event) => {
 
     const shortCode = event.pathParameters.shortCode;
-    
+    console.log(": ", shortCode);
     try {
 
         const params = {
@@ -35,7 +35,7 @@ exports.handler = async (event) => {
     } catch (error) {
       return {
         statusCode: 500,
-        body: JSON.stringify({ message: 'Internal server error' }),
+        body: JSON.stringify({ message: error.message }),
       };
     };
     
