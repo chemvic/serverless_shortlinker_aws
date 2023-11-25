@@ -7,7 +7,6 @@ let longLink='';
 let shortLink='';
 
 exports.handler = async (event) => {
-  console.log('event', event);
 
   const {longLink}= JSON.parse(event.body);
 // const userId =event.requestContext.authorizer;  
