@@ -1,37 +1,26 @@
 const AWS = require('aws-sdk');
 const dynamoDb  = new AWS.DynamoDB.DocumentClient();
-
+const Responses = require('../../common/API_Responses');
 exports.handler = async (event) => {
 
     const shortCode = event.pathParameters.shortCode;
-    console.log(": ", shortCode);
+    
     try {
 
         const params = {
             TableName: 'links',
-            Item: {
-              shortCode,
-             },
+            Key: {
+              'shortCode': shortCode,
+          },
           };
     const data = await dynamoDb.get(params).promise();
     
       if (!data||!data.Item) {
-        return  {
-            statusCode: 404,
-            body: JSON.stringify({message: "Invalid short URL"}),
-          };
-      };
-    
-      return {
-        statusCode: 200,
-            body: JSON.stringify(data),
-        // statusCode: 302,
-        // headers: {
-        //   Location: data.Item.link,
-        // },
-        // body: '',
-      };
-    
+        return Responses._404({ message: "Invalid short URL" });
+        
+      };    
+      return Responses._200({ data });
+     
     } catch (error) {
       return {
         statusCode: 500,
